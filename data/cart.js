@@ -9,3 +9,22 @@ const cart = [
 ];
 
 console.log(cart);
+
+function addToCart(productId){
+    let matchingItem = '';
+
+    cart.forEach((cartItem) => {
+        if(cartItem.id === productId){
+            matchingItem = cartItem;
+        }
+    });
+
+    if(matchingItem){
+        matchingItem.quantity++;
+    } else {
+        cart.push({
+            id : productId,
+            quantity : 1
+        });
+    }
+}
