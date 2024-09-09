@@ -1,5 +1,7 @@
 let productSummaryHTML = '';
 
+updateQuantityInAmazonPage();
+
 products.forEach((product) => {
     productSummaryHTML += `
         <div class="product-container">
@@ -61,7 +63,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((button) => {
         
         addToCart(productId);
         displayAdded(productId);
-        
+        updateQuantityInAmazonPage();
     });
 });
 
@@ -79,4 +81,9 @@ function displayAdded(productId){
         clicked.classList.remove('added-to-cart-clicked');
         delete timeoutId[productId];
     }, 2000);
+}
+
+function updateQuantityInAmazonPage(){
+    const quantity = cartQuantity();
+    document.querySelector('.js-cart-quantity').innerHTML = quantity;
 }

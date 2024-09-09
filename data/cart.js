@@ -27,4 +27,14 @@ function addToCart(productId){
             quantity : 1
         });
     }
+    console.log(cart);
+}
+
+function cartQuantity(){
+    let quantity = 0;
+    cart.forEach((cartItem) => {
+        quantity += cartItem.quantity;
+    });
+
+    return quantity;
 }
