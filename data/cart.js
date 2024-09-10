@@ -1,4 +1,4 @@
-const cart = JSON.parse(localStorage.getItem('cart')) || [
+export const cart = JSON.parse(localStorage.getItem('cart')) || [
     {
         id : "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
         quantity : 2
@@ -8,7 +8,7 @@ const cart = JSON.parse(localStorage.getItem('cart')) || [
     }
 ];
 
-function addToCart(productId){
+export function addToCart(productId){
     let matchingItem = '';
 
     cart.forEach((cartItem) => {
@@ -30,7 +30,7 @@ function addToCart(productId){
     storeCartInLocal();
 }
 
-function cartQuantity(){
+export function cartQuantity(){
     let quantity = 0;
     cart.forEach((cartItem) => {
         quantity += cartItem.quantity;

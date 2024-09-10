@@ -1,3 +1,6 @@
+import { products } from "../data/products.js";
+import { cartQuantity, addToCart } from "../data/cart.js";
+
 let productSummaryHTML = '';
 
 updateQuantityInAmazonPage();
