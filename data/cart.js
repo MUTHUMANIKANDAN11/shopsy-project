@@ -1,4 +1,4 @@
-const cart = [
+const cart = JSON.parse(localStorage.getItem('cart')) || [
     {
         id : "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
         quantity : 2
@@ -7,8 +7,6 @@ const cart = [
         quantity : 1
     }
 ];
-
-console.log(cart);
 
 function addToCart(productId){
     let matchingItem = '';
@@ -19,15 +17,17 @@ function addToCart(productId){
         }
     });
 
+    const quantity = Number(document.querySelector(`.quantity-input-${productId}`).value);
+
     if(matchingItem){
-        matchingItem.quantity++;
+        matchingItem.quantity += quantity;
     } else {
         cart.push({
             id : productId,
-            quantity : 1
+            quantity : quantity
         });
     }
-    console.log(cart);
+    storeCartInLocal();
 }
 
 function cartQuantity(){
@@ -37,4 +37,8 @@ function cartQuantity(){
     });
 
     return quantity;
+}
+
+function storeCartInLocal(){
+    localStorage.setItem('cart', JSON.stringify(cart));
 }
