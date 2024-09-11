@@ -8,6 +8,10 @@ export const cart = JSON.parse(localStorage.getItem('cart')) || [
     }
 ];
 
+function storeCartInLocal(){
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
 export function addToCart(productId){
     let matchingItem = '';
 
@@ -35,10 +39,17 @@ export function cartQuantity(){
     cart.forEach((cartItem) => {
         quantity += cartItem.quantity;
     });
-
     return quantity;
 }
 
-function storeCartInLocal(){
-    localStorage.setItem('cart', JSON.stringify(cart));
+export function updateQuantity(productId, newQuantity){
+    let matchedItem;
+    cart.forEach((item) => {
+        if(item.id === productId){
+            matchedItem = item;
+        }
+    });
+    matchedItem.quantity = newQuantity;
+
+    storeCartInLocal();
 }
