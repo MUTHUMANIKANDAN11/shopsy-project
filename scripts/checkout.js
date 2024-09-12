@@ -1,4 +1,4 @@
-import { cart, deleteFromCart, updateQuantity } from "../data/cart.js";
+import { cart, cartQuantity, deleteFromCart, updateQuantity } from "../data/cart.js";
 import { matchingProductItem } from "../data/products.js";
 import { moneyFormat } from "../others/money-format.js";
 
@@ -123,6 +123,8 @@ function renderOrderSummary(){
             renderOrderSummary();
         });
     });
+
+    document.querySelector('.js-return-to-home-link').innerHTML = cartQuantity();
 }
 
 renderOrderSummary();
