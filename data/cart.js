@@ -67,3 +67,12 @@ export function deleteFromCart(productId){
     console.log(cart);
     storeCartInLocal();
 }
+
+export function updateDeliveryOptionId(productId, deliveryOptionId){
+    cart.forEach((cartItem) => {
+        if(cartItem.id === productId){
+            cartItem.deliveryOptionId = deliveryOptionId;
+            storeCartInLocal();
+        }
+    });
+}

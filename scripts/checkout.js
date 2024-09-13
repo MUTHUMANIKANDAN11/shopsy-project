@@ -1,4 +1,4 @@
-import { cart, cartQuantity, deleteFromCart, updateQuantity } from "../data/cart.js";
+import { cart, cartQuantity, deleteFromCart, updateDeliveryOptionId, updateQuantity } from "../data/cart.js";
 import { matchingProductItem } from "../data/products.js";
 import { moneyFormat } from "../others/money-format.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
@@ -65,7 +65,6 @@ function renderOrderSummary(){
             </div>
             </div>
         `;
-        console.log(cartItem);
     });
 
     function deliveryOptionSummary(productId, deliveryOptionId){
@@ -84,7 +83,7 @@ function renderOrderSummary(){
             isChecked = (isChecked) ? 'checked' : '';
 
             deliveryOptionSummaryHTML += `
-                <div class="delivery-option">
+                <div class="delivery-option js-delivery-option" data-product-id="${productId}" data-delivery-option-id="${option.id}">
                     <input type="radio" class="delivery-option-input" ${isChecked}
                     name="delivery-option-${productId}">
                     <div>
@@ -137,6 +136,15 @@ function renderOrderSummary(){
     });
 
     document.querySelector('.js-return-to-home-link').innerHTML = cartQuantity();
+
+    document.querySelectorAll('.js-delivery-option').forEach((option) => {
+        option.addEventListener('click', () => {
+            const productId = option.dataset.productId;
+            const deliveryOptionId = Number(option.dataset.deliveryOptionId);
+            updateDeliveryOptionId(productId, deliveryOptionId);
+            renderOrderSummary();
+        });
+    });
 }
 
 renderOrderSummary();
