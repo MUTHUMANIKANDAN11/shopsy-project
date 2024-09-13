@@ -10,11 +10,22 @@ function renderOrderSummary(){
     cart.forEach((cartItem) => {
         const matchedItem = matchingProductItem(cartItem.id);
         const productId = matchedItem.id;
+        const deliveryOptionId = cartItem.deliveryOptionId;
+
+        let deliveryOption;
+        deliveryOptions.forEach((option) => {
+            if(option.id === deliveryOptionId)
+                deliveryOption = option;
+        });
+
+        const today = dayjs();
+        const later = today.add(deliveryOption.date, 'day');
+        const dateString = later.format('dddd, MMMM D');
 
         orderSummaryHTML += `
             <div class="cart-item-container js-cart-item-container-${productId}">
             <div class="delivery-date">
-                Delivery date: Wednesday, June 15
+                ${dateString}
             </div>
 
             <div class="cart-item-details-grid">
