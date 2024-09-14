@@ -3,6 +3,7 @@ import { matchingProductItem } from "../../data/products.js";
 import { moneyFormat } from "../../others/money-format.js";
 import { deliveryOptions } from "../../data/deliveryOptions.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
+import { renderPaymentSumary } from "./paymentSummary.js";
 
 export function renderOrderSummary(){
     let orderSummaryHTML = '';
@@ -145,4 +146,6 @@ export function renderOrderSummary(){
             renderOrderSummary();
         });
     });
+
+    renderPaymentSumary();
 }
