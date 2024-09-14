@@ -29,6 +29,7 @@ export function addToCart(productId){
         matchingItem.quantity += quantity;
     } else {
         cart.push({
+            deliveryOptionId : 1,
             id : productId,
             quantity : quantity
         });
@@ -69,10 +70,12 @@ export function deleteFromCart(productId){
 }
 
 export function updateDeliveryOptionId(productId, deliveryOptionId){
+    let matchedItem;
     cart.forEach((cartItem) => {
         if(cartItem.id === productId){
-            cartItem.deliveryOptionId = deliveryOptionId;
-            storeCartInLocal();
+            matchedItem = cartItem;
         }
     });
+    matchedItem.deliveryOptionId = deliveryOptionId;
+    storeCartInLocal();
 }
