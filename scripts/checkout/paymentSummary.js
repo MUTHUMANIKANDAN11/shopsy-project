@@ -23,8 +23,6 @@ export function renderPaymentSumary(){
     const taxAmount = Math.round(beforeTax * 0.10);
     const totalAmount = beforeTax + taxAmount;
 
-    console.log(initialAmount, shippingAmount, beforeTax, taxAmount, totalAmount);
-
     const paymentSummaryHTML = `
     
         <div class="payment-summary-title">
