@@ -1,20 +1,26 @@
-export let cart = JSON.parse(localStorage.getItem('cart')) || [
-    {
-        deliveryOptionId : 2,
-        id : "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-        quantity : 2
-    },{
-        deliveryOptionId: 1,
-        id : "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-        quantity : 1
-    }
-];
+export let cart;
+
+export function loadCartFromLocal(){
+    cart = JSON.parse(localStorage.getItem('cart')) || [
+        {
+            deliveryOptionId : 2,
+            id : "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+            quantity : 2
+        },{
+            deliveryOptionId: 1,
+            id : "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+            quantity : 1
+        }
+    ];
+}
+
+loadCartFromLocal();
 
 function storeCartInLocal(){
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-export function addToCart(productId){
+export function addToCart(productId, quantityCheck = 0){
     let matchingItem = '';
 
     cart.forEach((cartItem) => {
@@ -23,7 +29,15 @@ export function addToCart(productId){
         }
     });
 
-    const quantity = Number(document.querySelector(`.quantity-input-${productId}`).value);
+    let quantity;
+
+    if(quantityCheck == 0){
+        quantity = Number(document.querySelector(`.quantity-input-${productId}`).value);
+    }
+    else{
+        quantity = 1;
+    }
+    
 
     if(matchingItem){
         matchingItem.quantity += quantity;
