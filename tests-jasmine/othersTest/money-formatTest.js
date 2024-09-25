@@ -12,4 +12,8 @@ describe("Test Suite: Money format conversion", () => {
     it("Conversion with floating point value", () => {
         expect(moneyFormat(2000.5)).toEqual('20.01');
     });
+
+    it("Rounds down to nearest cent", () => {
+        expect(moneyFormat(2000.4)).toEqual('20.00');
+    });
 });
