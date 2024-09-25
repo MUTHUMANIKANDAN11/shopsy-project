@@ -79,7 +79,6 @@ export function deleteFromCart(productId){
         }
     });
     cart = newCart;
-    console.log(cart);
     storeCartInLocal();
 }
 
