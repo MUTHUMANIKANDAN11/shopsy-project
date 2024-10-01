@@ -1,14 +1,14 @@
-import { cart, cartQuantity } from "../../data/cart.js";
+import { cart } from "../../data/cart-class.js";
 import { deliveryOptions } from "../../data/deliveryOptions.js";
 import { matchingProductItem } from "../../data/products.js";
 import { moneyFormat } from "../../others/money-format.js";
 
 export function renderPaymentSumary(){
-    const quantity = cartQuantity();
+    const quantity = cart.cartQuantity();
     let initialAmount = 0;
     let shippingAmount = 0;
 
-    cart.forEach((cartItem) => {
+    cart.cartItem.forEach((cartItem) => {
         const matchedProduct = matchingProductItem(cartItem.id);
         initialAmount += matchedProduct.priceCents * cartItem.quantity;
 

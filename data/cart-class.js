@@ -22,7 +22,7 @@ class Cart{
     }
 
     storeCartInLocal(){
-        localStorage.setItem(localStorageKey, JSON.stringify(this.cartItem));
+        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItem));
     }
 
     addToCart(productId, quantityCheck = 0){
@@ -99,8 +99,4 @@ class Cart{
     }
 }
 
-const cart = new Cart('cart-class');
-const businessCart = new Cart('cart-busicess');
-
-console.log(cart);
-console.log(businessCart);
+export const cart = new Cart('cart-class');

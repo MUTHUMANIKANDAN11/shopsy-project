@@ -1,4 +1,4 @@
-import { cart, cartQuantity, deleteFromCart, updateDeliveryOptionId, updateQuantity } from "../../data/cart.js";
+import { cart } from "../../data/cart-class.js";
 import { matchingProductItem } from "../../data/products.js";
 import { moneyFormat } from "../../others/money-format.js";
 import { deliveryOptions } from "../../data/deliveryOptions.js";
@@ -7,8 +7,7 @@ import { renderPaymentSumary } from "./paymentSummary.js";
 
 export function renderOrderSummary(){
     let orderSummaryHTML = '';
-
-    cart.forEach((cartItem) => {
+    cart.cartItem.forEach((cartItem) => {
         const matchedItem = matchingProductItem(cartItem.id);
         const productId = matchedItem.id;
         const deliveryOptionId = cartItem.deliveryOptionId;
@@ -122,7 +121,7 @@ export function renderOrderSummary(){
             const quantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
 
             if(quantity>0 && quantity<1000){
-                updateQuantity(productId, quantity);
+                cart.updateQuantity(productId, quantity);
                 renderOrderSummary();
             }
         });
@@ -131,18 +130,18 @@ export function renderOrderSummary(){
     document.querySelectorAll('.js-delete-quantity-link').forEach((link) => {
         link.addEventListener('click', () => {
             const productId = link.dataset.productId;
-            deleteFromCart(productId);
+            cart.deleteFromCart(productId);
             renderOrderSummary();
         });
     });
 
-    document.querySelector('.js-return-to-home-link').innerHTML = cartQuantity();
+    document.querySelector('.js-return-to-home-link').innerHTML = cart.cartQuantity();
 
     document.querySelectorAll('.js-delivery-option').forEach((option) => {
         option.addEventListener('click', () => {
             const productId = option.dataset.productId;
             const deliveryOptionId = Number(option.dataset.deliveryOptionId);
-            updateDeliveryOptionId(productId, deliveryOptionId);
+            cart.updateDeliveryOptionId(productId, deliveryOptionId);
             renderOrderSummary();
         });
     });
