@@ -1,9 +1,9 @@
 import { cart } from "../../data/cart-class.js";
-import { matchingProductItem } from "../../data/products.js";
-import { moneyFormat } from "../../others/money-format.js";
+import { matchingProductItem } from "../../data/products-class.js";
 import { deliveryOptions } from "../../data/deliveryOptions.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { renderPaymentSumary } from "./paymentSummary.js";
+import { moneyFormat } from "../../others/money-format.js";
 
 export function renderOrderSummary(){
     let orderSummaryHTML = '';
@@ -11,7 +11,7 @@ export function renderOrderSummary(){
         const matchedItem = matchingProductItem(cartItem.id);
         const productId = matchedItem.id;
         const deliveryOptionId = cartItem.deliveryOptionId;
-
+        
         let deliveryOption;
         deliveryOptions.forEach((option) => {
             if(option.id === deliveryOptionId)
@@ -37,7 +37,7 @@ export function renderOrderSummary(){
                     ${matchedItem.name}
                 </div>
                 <div class="product-price js-product-price-${productId}">
-                    $${moneyFormat(matchedItem.priceCents)}
+                    ${matchedItem.getPrice()}
                 </div>
                 <div class="product-quantity">
                     <span>
@@ -76,7 +76,7 @@ export function renderOrderSummary(){
             const dateString = later.format('dddd, MMMM D');
 
             let priceCentsString = option.priceCents;
-            priceCentsString = (priceCentsString === 0) ? 'FREE' : `$${priceCentsString} -`;
+            priceCentsString = (priceCentsString === 0) ? 'FREE' : `${moneyFormat(priceCentsString)} -`;
 
             let isChecked = false;
             if(option.id === deliveryOptionId) isChecked = true;

@@ -1,4 +1,4 @@
-import { loadCartFromLocal, cart } from "../../data/cart.js";
+import { cart } from "../../data/cart-class.js";
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
 
 describe("Test Suite: renderOrderSummary", () => {
@@ -25,7 +25,7 @@ describe("Test Suite: renderOrderSummary", () => {
             }]);
         });
 
-        loadCartFromLocal();
+        cart.loadCartFromLocal();
         
         renderOrderSummary();
     });
@@ -48,8 +48,8 @@ describe("Test Suite: renderOrderSummary", () => {
         document.querySelector(`.js-delete-quantity-link-${productId1}`).click();
 
         expect(document.querySelector(`.js-delete-quantity-link-${productId1}`)).toEqual(null);
-        expect(cart.length).toEqual(1);
+        expect(cart.cartItem.length).toEqual(1);
         expect(document.querySelector(`.js-delete-quantity-link-${productId2}`)).not.toEqual(null);
-        expect(cart[0].id).toEqual(productId2);
+        expect(cart.cartItem[0].id).toEqual(productId2);
     });
 });
