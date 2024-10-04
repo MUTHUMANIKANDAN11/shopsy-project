@@ -22,6 +22,23 @@ import { moneyFormat } from "../others/money-format.js";
     getPrice(){
       return `$${moneyFormat(this.priceCents)}`;
     }
+
+    getSizeChartLink(){
+      return '';
+    }
+  }
+
+  class Clothing extends Products{
+    sizeChartLink;
+
+    constructor(product) {
+      super(product);
+      this.sizeChartLink = product.sizeChartLink;
+    }
+
+    getSizeChartLink(){
+      return `<a href="${this.sizeChartLink}" target="_blank">Size chart</a>`
+    }
   }
 
   export const products = [
@@ -684,6 +701,9 @@ import { moneyFormat } from "../others/money-format.js";
       ]
     }
   ].map((product) => {
+    if(product.type === 'clothing'){
+      return new Clothing(product);
+    }
     return new Products(product);
   });
 
@@ -698,3 +718,5 @@ import { moneyFormat } from "../others/money-format.js";
   
     return matchedItem;
   }
+
+  console.log(products);
