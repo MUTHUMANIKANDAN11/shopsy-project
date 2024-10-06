@@ -43,3 +43,50 @@ describe("Test Suite: Products-class", () => {
         expect(product.getSizeChartLink()).toEqual('');
     });
 });
+
+describe("Test Suite: Clothing-class", () => {
+    let product;
+    beforeEach(() => {
+        product = new Clothing({
+            id: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
+            image: "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
+            name: "Adults Plain Cotton T-Shirt - 2 Pack",
+            rating: {
+              stars: 4.5,
+              count: 56
+            },
+            priceCents: 799,
+            keywords: [
+              "tshirts",
+              "apparel",
+              "mens"
+            ],
+            type: "clothing",
+            sizeChartLink: "images/clothing-size-chart.png"
+          });
+    });
+
+    it("Has a correct properties:", () => {
+        expect(product.id).toEqual("83d4ca15-0f35-48f5-b7a3-1ea210004f2e");
+        expect(product.image).toEqual("images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg");
+        expect(product.name).toEqual("Adults Plain Cotton T-Shirt - 2 Pack");
+        expect(product.rating).toEqual({
+            stars: 4.5,
+            count: 56
+          });
+        expect(product.priceCents).toEqual(799);
+        expect(product.sizeChartLink).toEqual("images/clothing-size-chart.png");
+    });
+
+    it("getStarURL:", () => {
+        expect(product.getStarURL()).toEqual('images/ratings/rating-45.png');
+    });
+
+    it("getPrice:", () => {
+        expect(product.getPrice()).toEqual('$7.99');
+    });
+
+    it("getSizeChartLink:", () => {
+        expect(product.getSizeChartLink()).toEqual('<a href="images/clothing-size-chart.png" target="_blank">Size chart</a>');
+    });
+});
