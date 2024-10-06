@@ -718,5 +718,3 @@ import { moneyFormat } from "../others/money-format.js";
   
     return matchedItem;
   }
-
-  console.log(products);
