@@ -26,6 +26,10 @@ import { moneyFormat } from "../others/money-format.js";
     getSizeChartLink(){
       return '';
     }
+
+    getInstructionAndWarrantyLink(){
+      return '';
+    }
   }
 
   class Clothing extends Products{
@@ -38,6 +42,22 @@ import { moneyFormat } from "../others/money-format.js";
 
     getSizeChartLink(){
       return `<a href="${this.sizeChartLink}" target="_blank">Size chart</a>`
+    }
+  }
+
+  class Appliances extends Products{
+    instructionLink;
+    warrantyLink;
+
+    constructor(product){
+      super(product);
+      this.instructionLink = 'images/appliance-instructions.png';
+      this.warrantyLink = 'images/appliance-warranty.png';
+    }
+
+    getSizeChartLink(){
+      return `<a href="${this.instructionLink} target="_blank">Instruction</a>
+              <a href="${this.warrantyLink} target="_blank">Warranty</a>`
     }
   }
 
@@ -101,7 +121,8 @@ import { moneyFormat } from "../others/money-format.js";
         "toaster",
         "kitchen",
         "appliances"
-      ]
+      ],
+      type: 'appliance'
     },
     {
       id: "3ebe75dc-64d2-4137-8860-1f5a963e534b",
@@ -130,7 +151,8 @@ import { moneyFormat } from "../others/money-format.js";
       keywords: [
         "kitchen",
         "cookware"
-      ]
+      ],
+      type: 'appliance'
     },
     {
       id: "dd82ca78-a18b-4e2a-9250-31e67412f98d",
@@ -286,7 +308,8 @@ import { moneyFormat } from "../others/money-format.js";
         "water boiler",
         "appliances",
         "kitchen"
-      ]
+      ],
+      type: 'appliance'
     },
     {
       id: "6b07d4e7-f540-454e-8a1e-363f25dbae7d",
@@ -591,7 +614,8 @@ import { moneyFormat } from "../others/money-format.js";
         "coffeemakers",
         "kitchen",
         "appliances"
-      ]
+      ],
+      type: 'appliance'
     },
     {
       id: "02e3a47e-dd68-467e-9f71-8bf6f723fdae",
@@ -651,7 +675,8 @@ import { moneyFormat } from "../others/money-format.js";
         "food blenders",
         "kitchen",
         "appliances"
-      ]
+      ],
+      type: 'appliance'
     },
     {
       id: "36c64692-677f-4f58-b5ec-0dc2cf109e27",
@@ -703,6 +728,9 @@ import { moneyFormat } from "../others/money-format.js";
   ].map((product) => {
     if(product.type === 'clothing'){
       return new Clothing(product);
+    }
+    if(product.type === 'appliance'){
+      return new Appliances(product);
     }
     return new Products(product);
   });
