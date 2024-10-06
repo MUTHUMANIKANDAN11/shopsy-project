@@ -1,6 +1,6 @@
 import { moneyFormat } from "../others/money-format.js";
 
-  class Products{
+  export class Products{
     id;
     image;
     name;
@@ -26,13 +26,9 @@ import { moneyFormat } from "../others/money-format.js";
     getSizeChartLink(){
       return '';
     }
-
-    getInstructionAndWarrantyLink(){
-      return '';
-    }
   }
 
-  class Clothing extends Products{
+  export class Clothing extends Products{
     sizeChartLink;
 
     constructor(product) {
@@ -45,7 +41,7 @@ import { moneyFormat } from "../others/money-format.js";
     }
   }
 
-  class Appliances extends Products{
+  export class Appliances extends Products{
     instructionLink;
     warrantyLink;
 

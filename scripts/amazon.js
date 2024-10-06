@@ -1,6 +1,5 @@
 import { products } from "../data/products-class.js";
 import {cart} from "../data/cart-class.js";
-import { moneyFormat } from "../others/money-format.js";
 
 let productSummaryHTML = '';
 
