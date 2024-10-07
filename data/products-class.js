@@ -56,6 +56,44 @@ import { moneyFormat } from "../others/money-format.js";
     }
   }
 
+  export let products;
+
+  export function loadProductFromBackend(fun){
+    const xhr = new XMLHttpRequest();
+
+    xhr.addEventListener('load', () => {
+      products = JSON.parse(xhr.response).map((product) => {
+        if(product.type === 'clothing'){
+          return new Clothing(product);
+        }
+        if(product.type === 'appliance'){
+          return new Appliances(product);
+        }
+        return new Products(product);
+      });
+
+      fun();
+    });
+
+    xhr.open('GET', "https://supersimplebackend.dev/products");
+    xhr.send();
+  }
+
+  loadProductFromBackend();
+
+  export function matchingProductItem(productId){
+    let matchedItem;
+    
+    products.forEach((item) => {
+      if(item.id === productId){
+        matchedItem = item;
+      }
+    });
+  
+    return matchedItem;
+  }
+
+  /*
   export const products = [
     {
       id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -729,15 +767,4 @@ import { moneyFormat } from "../others/money-format.js";
     }
     return new Products(product);
   });
-
-  export function matchingProductItem(productId){
-    let matchedItem;
-    
-    products.forEach((item) => {
-      if(item.id === productId){
-        matchedItem = item;
-      }
-    });
-  
-    return matchedItem;
-  }
+    */
