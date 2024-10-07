@@ -90,3 +90,48 @@ describe("Test Suite: Clothing-class", () => {
         expect(product.getSizeChartLink()).toEqual('<a href="images/clothing-size-chart.png" target="_blank">Size chart</a>');
     });
 });
+
+describe("Test Suite: Appliance-class", () => {
+    let product;
+    beforeEach(() => {
+        product = new Appliances({
+            id: "54e0eccd-8f36-462b-b68a-8182611d9add",
+            image: "images/products/black-2-slot-toaster.jpg",
+            name: "2 Slot Toaster - Black",
+            rating: {
+              stars: 5,
+              count: 2197
+            },
+            priceCents: 1899,
+            keywords: [
+              "toaster",
+              "kitchen",
+              "appliances"
+            ],
+            type: 'appliance'
+          });
+    });
+
+    it("Has a correct properties:", () => {
+        expect(product.id).toEqual("54e0eccd-8f36-462b-b68a-8182611d9add");
+        expect(product.image).toEqual("images/products/black-2-slot-toaster.jpg");
+        expect(product.name).toEqual("2 Slot Toaster - Black");
+        expect(product.rating).toEqual({
+            stars: 5,
+            count: 2197
+          });
+        expect(product.priceCents).toEqual(1899);
+    });
+
+    it("getStarURL:", () => {
+        expect(product.getStarURL()).toEqual('images/ratings/rating-50.png');
+    });
+
+    it("getPrice:", () => {
+        expect(product.getPrice()).toEqual('$18.99');
+    });
+
+    it("getSizeChartLink:", () => {
+        expect(product.getSizeChartLink()).toEqual(`<a href="${product.instructionLink} target="_blank">Instruction</a> <a href="${product.warrantyLink} target="_blank">Warranty</a>`);
+    });
+});

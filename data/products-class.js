@@ -52,8 +52,7 @@ import { moneyFormat } from "../others/money-format.js";
     }
 
     getSizeChartLink(){
-      return `<a href="${this.instructionLink} target="_blank">Instruction</a>
-              <a href="${this.warrantyLink} target="_blank">Warranty</a>`
+      return `<a href="${this.instructionLink} target="_blank">Instruction</a> <a href="${this.warrantyLink} target="_blank">Warranty</a>`
     }
   }
 
