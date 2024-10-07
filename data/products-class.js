@@ -72,7 +72,9 @@ import { moneyFormat } from "../others/money-format.js";
         return new Products(product);
       });
 
-      fun();
+      if(typeof fun === 'function'){
+        fun();
+      }
     });
 
     xhr.open('GET', "https://supersimplebackend.dev/products");
