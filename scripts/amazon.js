@@ -4,7 +4,13 @@ import { loadProductFromBackend } from "../data/products-class.js";
 
 let productSummaryHTML = '';
 
-loadProductFromBackend(renderProductsGrid);
+new Promise((resolve) => {
+    loadProductFromBackend(() => {
+        resolve();
+    });
+}).then(() => {
+    renderProductsGrid();
+});
 
 function renderProductsGrid(){
     updateQuantityInAmazonPage();
