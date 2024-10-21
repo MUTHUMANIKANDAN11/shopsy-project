@@ -7,11 +7,7 @@ import { loadProductFromBackend } from "../data/products-class.js";
 //import "../data/car-class.js";
 //import "../data/backend-practice.js";
 
-new Promise((resolve) => {
-    loadProductFromBackend(() => {
-        resolve();
-    });
-}).then(() => {
+loadProductFromBackend().then(() => {
     renderOrderSummary();
     renderPaymentSumary();
 });

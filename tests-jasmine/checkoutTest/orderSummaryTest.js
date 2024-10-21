@@ -4,7 +4,7 @@ import { loadProductFromBackend } from "../../data/products-class.js";
 
 describe("Test Suite: renderOrderSummary", () => {
     beforeAll((done) => {
-        loadProductFromBackend(() => {
+        loadProductFromBackend().then(() => {
             done();
         });
     });

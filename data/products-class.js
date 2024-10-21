@@ -58,6 +58,27 @@ import { moneyFormat } from "../others/money-format.js";
 
   export let products;
 
+  export function loadProductFromBackend(){
+    const fet = fetch("https://supersimplebackend.dev/products").then((response) => {
+      return response.json();
+    }).then((response) => {
+      products = response.map((product) => {
+        if(product.type === 'clothing'){
+          return new Clothing(product);
+        }
+        if(product.type === 'appliance'){
+          return new Appliances(product);
+        }
+        return new Products(product);
+      });
+    })
+    
+    return fet;
+  }
+
+  loadProductFromBackend();
+
+  /*
   export function loadProductFromBackend(fun){
     const xhr = new XMLHttpRequest();
 
@@ -82,6 +103,7 @@ import { moneyFormat } from "../others/money-format.js";
   }
 
   loadProductFromBackend();
+  */
 
   export function matchingProductItem(productId){
     let matchedItem;
