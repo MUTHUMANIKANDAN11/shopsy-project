@@ -4,12 +4,10 @@ import { loadProductFromBackend } from "../data/products-class.js";
 
 let productSummaryHTML = '';
 
-new Promise((resolve) => {
-    loadProductFromBackend(() => {
-        resolve();
-    });
-}).then(() => {
+//console.log("befor", products);
+loadProductFromBackend().then(() => {
     renderProductsGrid();
+    //console.log("befor", products);
 });
 
 function renderProductsGrid(){
