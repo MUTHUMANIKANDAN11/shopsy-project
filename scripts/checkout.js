@@ -1,22 +1,24 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSumary } from "./checkout/paymentSummary.js";
-import { loadProductFromBackend } from "../data/products-class.js";
+import { loadProductFromBackend, loadProductLocal, storeProductLocal } from "../data/products-class.js";
 import { products } from "../data/products-class.js";
 
 //import '../data/cart-class.js';
 //import "../data/products-class.js";
 //import "../data/car-class.js";
-import "../data/backend-practice.js";
+//import "../data/backend-practice.js";
 
-//console.log(products);
+
 if(products === "NULL"){
-    //console.log("--if");
+    console.log("--if");
     loadProductFromBackend().then(() => {
         renderOrderSummary();
         renderPaymentSumary();
+        storeProductLocal();
     });
 } else {
     console.log("--else");
+    
     renderOrderSummary();
     renderPaymentSumary();
 }

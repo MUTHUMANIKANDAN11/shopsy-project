@@ -56,27 +56,46 @@ import { moneyFormat } from "../others/money-format.js";
     }
   }
 
-  export let products = "NULL";
-
   export function loadProductFromBackend(){
     const fet = fetch("https://supersimplebackend.dev/products").then((response) => {
       return response.json();
-    }).then((response) => {
-      products = response.map((product) => {
-        if(product.type === 'clothing'){
-          return new Clothing(product);
-        }
-        if(product.type === 'appliance'){
-          return new Appliances(product);
-        }
-        return new Products(product);
-      });
-    })
+    });
     
     return fet;
   }
 
-  loadProductFromBackend();
+  export let products;
+  loadProductLocal();
+
+  export function storeProductLocal(){
+    localStorage.setItem('products', JSON.stringify(products));
+  }
+
+  export function loadProductLocal(){
+    products = JSON.parse(localStorage.getItem('products')) || "NULL";
+    if(products !== "NULL"){
+      products = products.map((product) => {
+          if(product.type === 'clothing'){
+            return new Clothing(product);
+          }
+          if(product.type === 'appliance'){
+            return new Appliances(product);
+          }
+          return new Products(product);
+        });
+      };
+    console.log(typeof products);
+    console.log(products);
+  }
+
+  if(products === 'NULL'){
+    loadProductFromBackend().then((response) => {
+      products = response;
+    });
+
+    storeProductLocal();
+    loadProductLocal();
+  }
 
   /*
   export function loadProductFromBackend(fun){

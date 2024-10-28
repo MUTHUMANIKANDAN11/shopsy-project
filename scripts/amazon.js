@@ -1,14 +1,20 @@
-import { products } from "../data/products-class.js";
+import { loadProductLocal, products } from "../data/products-class.js";
 import {cart} from "../data/cart-class.js";
 import { loadProductFromBackend } from "../data/products-class.js";
 
 let productSummaryHTML = '';
 
 //console.log("befor", products);
-loadProductFromBackend().then(() => {
+
+
+if(products === 'NULL'){
+    loadProductFromBackend().then(() => {
+        renderProductsGrid();
+    });
+} else {
+    loadProductLocal();
     renderProductsGrid();
-    //console.log("befor", products);
-});
+}
 
 function renderProductsGrid(){
     updateQuantityInAmazonPage();
