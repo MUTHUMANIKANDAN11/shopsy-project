@@ -4,17 +4,10 @@ import { loadProductFromBackend } from "../data/products-class.js";
 
 let productSummaryHTML = '';
 
-//console.log("befor", products);
 
-
-if(products === 'NULL'){
-    loadProductFromBackend().then(() => {
-        renderProductsGrid();
-    });
-} else {
-    loadProductLocal();
+loadProductFromBackend().then(() => {
     renderProductsGrid();
-}
+});
 
 function renderProductsGrid(){
     updateQuantityInAmazonPage();

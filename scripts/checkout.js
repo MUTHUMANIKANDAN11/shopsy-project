@@ -9,16 +9,16 @@ import { products } from "../data/products-class.js";
 //import "../data/backend-practice.js";
 
 
+async function loadCheckoutPage(){
+    await loadProductFromBackend();
+    renderOrderSummary();
+    renderPaymentSumary();
+    storeProductLocal();
+}
+
 if(products === "NULL"){
-    console.log("--if");
-    loadProductFromBackend().then(() => {
-        renderOrderSummary();
-        renderPaymentSumary();
-        storeProductLocal();
-    });
+    loadCheckoutPage();
 } else {
-    console.log("--else");
-    
     renderOrderSummary();
     renderPaymentSumary();
 }

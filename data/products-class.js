@@ -84,8 +84,6 @@ import { moneyFormat } from "../others/money-format.js";
           return new Products(product);
         });
       };
-    console.log(typeof products);
-    console.log(products);
   }
 
   if(products === 'NULL'){
