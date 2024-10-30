@@ -13,12 +13,12 @@ async function loadCheckoutPage(){
     await loadProductFromBackend();
     renderOrderSummary();
     renderPaymentSumary();
-    storeProductLocal();
 }
 
 if(products === "NULL"){
     loadCheckoutPage();
 } else {
+    loadProductLocal();
     renderOrderSummary();
     renderPaymentSumary();
 }

@@ -8,7 +8,7 @@ import { moneyFormat } from "../../others/money-format.js";
 export function renderOrderSummary(){
     let orderSummaryHTML = '';
     cart.cartItem.forEach((cartItem) => {
-        const matchedItem = matchingProductItem(cartItem.id);
+        const matchedItem = matchingProductItem(cartItem.productId);
         const productId = matchedItem.id;
         const deliveryOptionId = cartItem.deliveryOptionId;
         
@@ -19,7 +19,7 @@ export function renderOrderSummary(){
         });
 
         const today = dayjs();
-        const later = today.add(deliveryOption.date, 'day');
+        const later = today.add(Number(deliveryOption.date), 'day');
         const dateString = later.format('dddd, MMMM D');
 
         orderSummaryHTML += `
@@ -72,7 +72,7 @@ export function renderOrderSummary(){
         deliveryOptions.forEach((option) => {
 
             const today = dayjs();
-            const later = today.add(option.date, 'day');
+            const later = today.add(Number(option.date), 'day');
             const dateString = later.format('dddd, MMMM D');
 
             let priceCentsString = option.priceCents;

@@ -83,16 +83,13 @@ import { moneyFormat } from "../others/money-format.js";
           }
           return new Products(product);
         });
-      };
-  }
-
-  if(products === 'NULL'){
-    loadProductFromBackend().then((response) => {
-      products = response;
-    });
-
-    storeProductLocal();
-    loadProductLocal();
+      } else {
+        loadProductFromBackend().then((response) => {
+          products = response;
+          storeProductLocal();
+          loadProductLocal();
+        });
+    }
   }
 
   /*

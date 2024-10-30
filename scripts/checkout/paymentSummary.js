@@ -2,6 +2,7 @@ import { cart } from "../../data/cart-class.js";
 import { deliveryOptions } from "../../data/deliveryOptions.js";
 import { matchingProductItem } from "../../data/products.js";
 import { moneyFormat } from "../../others/money-format.js";
+import { addOrder } from "../../data/orders.js";
 
 export function renderPaymentSumary(){
     const quantity = cart.cartQuantity();
@@ -9,7 +10,7 @@ export function renderPaymentSumary(){
     let shippingAmount = 0;
 
     cart.cartItem.forEach((cartItem) => {
-        const matchedProduct = matchingProductItem(cartItem.id);
+        const matchedProduct = matchingProductItem(cartItem.productId);
         initialAmount += matchedProduct.priceCents * cartItem.quantity;
 
         deliveryOptions.forEach((option) => {
@@ -54,10 +55,35 @@ export function renderPaymentSumary(){
             <div class="payment-summary-money">$${moneyFormat(totalAmount)}</div>
           </div>
 
-          <button class="place-order-button button-primary">
+          <button class="place-order-button button-primary js-place-order-button">
             Place your order
           </button>
     `;
 
     document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
+
+    document.querySelector('.js-place-order-button').addEventListener('click', async () => {
+    try {
+        const response = await fetch('https://supersimplebackend.dev/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                cart: cart.cartItem
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to place order: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        addOrder(data);
+
+    } catch (error) {
+        console.error('Error placing order:', error);
+    }
+});
 }
