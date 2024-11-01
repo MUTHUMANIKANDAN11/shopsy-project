@@ -1,12 +1,13 @@
 import { cart } from "../../data/cart-class.js";
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
-import { loadProductFromBackend } from "../../data/products-class.js";
+import { loadProductFromBackend, loadProductLocal } from "../../data/products-class.js";
 
 describe("Test Suite: renderOrderSummary", () => {
     beforeAll((done) => {
         loadProductFromBackend().then(() => {
             done();
         });
+        loadProductLocal();
     });
 
     const productId1 = "e43638ce-6aa0-4b85-b27f-e1d07eb678c6";
@@ -23,11 +24,11 @@ describe("Test Suite: renderOrderSummary", () => {
         spyOn(localStorage, "getItem").and.callFake(() => {
             return JSON.stringify([{
                 deliveryOptionId : 2,
-                id : productId1,
+                productId : productId1,
                 quantity : 2
             },{
                 deliveryOptionId: 1,
-                id : productId2,
+                productId : productId2,
                 quantity : 1
             }]);
         });
@@ -57,6 +58,6 @@ describe("Test Suite: renderOrderSummary", () => {
         expect(document.querySelector(`.js-delete-quantity-link-${productId1}`)).toEqual(null);
         expect(cart.cartItem.length).toEqual(1);
         expect(document.querySelector(`.js-delete-quantity-link-${productId2}`)).not.toEqual(null);
-        expect(cart.cartItem[0].id).toEqual(productId2);
+        expect(cart.cartItem[0].productId).toEqual(productId2);
     });
 });
