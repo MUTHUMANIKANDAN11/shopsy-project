@@ -34,15 +34,20 @@ function renderOrdersPage(){
                 <div class="product-quantity">
                 Quantity: ${product.quantity}
                 </div>
-                <button class="buy-again-button button-primary js-buy-again-button" data-product-id="${product.productId}">
+                <button class="buy-again-button button-primary js-buy-again-button">
                 <img class="buy-again-icon" src=".//images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
                 </button>
             </div>
 
             <div class="product-actions">
-                <a href="tracking.html">
-                <button class="track-package-button button-secondary">
+                <a>
+                <button class="track-package-button button-secondary js-track-package-button" 
+                    data-product-name="${matchedProduct.name}"
+                    data-product-image="${matchedProduct.image}"
+                    data-product-date="${product.estimatedDeliveryTime}"
+                    data-product-quantity="${product.quantity}"
+                >
                     Track package
                 </button>
                 </a>
@@ -91,5 +96,23 @@ document.querySelectorAll('.js-buy-again-button').forEach((button) => {
         const productId = button.dataset.productId;
         cart.addToCart(productId, 1);
         document.querySelector('.js-cart-quantity').innerText = cart.cartQuantity();
+    });
+});
+
+document.querySelectorAll('.js-track-package-button').forEach((button) => {
+    button.addEventListener('click', () => {
+        const name = button.dataset.productName;
+        const image = button.dataset.productImage;
+        const date = button.dataset.productDate;
+        const quantity = button.dataset.productQuantity;
+
+        const param = new URLSearchParams({
+            name,
+            image,
+            date,
+            quantity
+        });
+        
+        window.location.href = `./tracking.html?${param.toString()}`;
     });
 });
