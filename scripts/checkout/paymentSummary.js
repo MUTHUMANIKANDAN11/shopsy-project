@@ -83,6 +83,8 @@ export function renderPaymentSumary(){
         addOrder(data);
 
         window.location.href = './orders.html';
+        cart.cartItem = [];
+        cart.storeCartInLocal();
 
     } catch (error) {
         console.error('Error placing order:', error);
