@@ -4,14 +4,31 @@ import { loadProductFromBackend } from "../data/products-class.js";
 
 let productSummaryHTML = '';
 
-
 loadProductFromBackend().then(() => {
     renderProductsGrid();
 });
 
+const url = new URL(window.location.href);
+
+let products2 = products;
+
+const isParam = url.searchParams.has('search');
+
+if(isParam){
+    const text = url.searchParams.get('search').toLocaleLowerCase();
+    let newProduct = [];
+    products.forEach((productItem) => {
+        const name = productItem.name.toLocaleLowerCase();
+        if(name.includes(text)){
+            newProduct.push(productItem);
+        }
+    });
+    products2 = newProduct;
+}
+
 function renderProductsGrid(){
     updateQuantityInAmazonPage();
-    products.forEach((product) => {
+    products2.forEach((product) => {
         productSummaryHTML += `
             <div class="product-container">
                 <div class="product-image-container">
@@ -99,3 +116,12 @@ function renderProductsGrid(){
         document.querySelector('.js-cart-quantity').innerHTML = quantity;
     }
 }
+
+document.querySelector('.js-search-button').addEventListener('click', () => {
+    const text = document.querySelector('.js-search-bar').value;
+    const url = new URLSearchParams({
+        search: text
+    });
+
+    window.location.href = `amazon.html?${url.toString()}`;
+});

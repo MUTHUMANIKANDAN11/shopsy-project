@@ -108,8 +108,6 @@ document.querySelectorAll('.js-track-package-button').forEach((button) => {
         const quantity = button.dataset.productQuantity;
         const orderTime = button.dataset.productOrder;
 
-        console.log(orderTime);
-
         const param = new URLSearchParams({
             name,
             image,
