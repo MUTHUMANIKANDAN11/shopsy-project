@@ -7,8 +7,10 @@ import { moneyFormat } from "../../others/money-format.js";
 
 export function renderOrderSummary(){
     let orderSummaryHTML = '';
+    console.log(cart.cartItem);
     cart.cartItem.forEach((cartItem) => {
         const matchedItem = matchingProductItem(cartItem.productId);
+        console.log(cartItem);
         const productId = matchedItem.id;
         const deliveryOptionId = String(cartItem.deliveryOptionId);
         

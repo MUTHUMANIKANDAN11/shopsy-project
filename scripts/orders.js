@@ -34,7 +34,7 @@ function renderOrdersPage(){
                 <div class="product-quantity">
                 Quantity: ${product.quantity}
                 </div>
-                <button class="buy-again-button button-primary js-buy-again-button">
+                <button class="buy-again-button button-primary js-buy-again-button" data-product-id="${product.productId}">
                 <img class="buy-again-icon" src=".//images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
                 </button>
@@ -47,6 +47,7 @@ function renderOrdersPage(){
                     data-product-image="${matchedProduct.image}"
                     data-product-date="${product.estimatedDeliveryTime}"
                     data-product-quantity="${product.quantity}"
+                    data-product-order="${order.orderTime}"
                 >
                     Track package
                 </button>
@@ -105,12 +106,16 @@ document.querySelectorAll('.js-track-package-button').forEach((button) => {
         const image = button.dataset.productImage;
         const date = button.dataset.productDate;
         const quantity = button.dataset.productQuantity;
+        const orderTime = button.dataset.productOrder;
+
+        console.log(orderTime);
 
         const param = new URLSearchParams({
             name,
             image,
             date,
-            quantity
+            quantity,
+            orderTime
         });
         
         window.location.href = `./tracking.html?${param.toString()}`;
