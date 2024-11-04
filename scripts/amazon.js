@@ -1,30 +1,40 @@
-import { loadProductLocal, products } from "../data/products-class.js";
+import { products, Products, Appliances, Clothing } from "../data/products-class.js";
 import {cart} from "../data/cart-class.js";
 import { loadProductFromBackend } from "../data/products-class.js";
 
 let productSummaryHTML = '';
 
-loadProductFromBackend().then(() => {
+let products2;
+
+loadProductFromBackend().then((response) => {
+    products2 = response.map((product) => {
+        if(product.type === 'clothing'){
+          return new Clothing(product);
+        }
+        if(product.type === 'appliance'){
+          return new Appliances(product);
+        }
+        return new Products(product);
+      });
+      
+    const url = new URL(window.location.href);
+    
+    const isParam = url.searchParams.has('search');
+    
+    if(isParam){
+        const text = url.searchParams.get('search').toLocaleLowerCase();
+        let newProduct = [];
+        products.forEach((productItem) => {
+            const name = productItem.name.toLocaleLowerCase();
+            if(name.includes(text) || productItem.keywords.includes(text)){
+                newProduct.push(productItem);
+            }
+        });
+        products2 = newProduct;
+    }
+    
     renderProductsGrid();
 });
-
-const url = new URL(window.location.href);
-
-let products2 = products;
-
-const isParam = url.searchParams.has('search');
-
-if(isParam){
-    const text = url.searchParams.get('search').toLocaleLowerCase();
-    let newProduct = [];
-    products.forEach((productItem) => {
-        const name = productItem.name.toLocaleLowerCase();
-        if(name.includes(text)){
-            newProduct.push(productItem);
-        }
-    });
-    products2 = newProduct;
-}
 
 function renderProductsGrid(){
     updateQuantityInAmazonPage();

@@ -6,11 +6,13 @@ import { moneyFormat } from "../others/money-format.js";
     name;
     rating;
     priceCents;
+    keywords;
 
     constructor(product) {
         this.id = product.id;
         this.image = product.image;
         this.name = product.name;
+        this.keywords = product.keywords;
         this.rating = product.rating;
         this.priceCents = product.priceCents;
     }
