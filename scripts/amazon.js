@@ -2,6 +2,8 @@ import { products, Products, Appliances, Clothing } from "../data/products-class
 import {cart} from "../data/cart-class.js";
 import { loadProductFromBackend } from "../data/products-class.js";
 
+import "../data/accounts.js";
+
 let productSummaryHTML = '';
 
 let products2;

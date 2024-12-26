@@ -1,5 +1,5 @@
 .amazon-header {
-  background-color: rgb(19, 25, 33);
+  background-color: rgb(5, 104, 235);
   color: white;
   padding-left: 15px;
   padding-right: 15px;
@@ -23,6 +23,14 @@
   .amazon-header-left-section {
     width: unset;
   }
+  .amazon-logo {
+    height: 70px;
+    object-fit:contain;
+  }
+  .signin-btn{
+    height: 20px;
+    font-size: 10px;
+  }
 }
 
 .header-link {
@@ -40,7 +48,6 @@
 
 .amazon-logo {
   width: 100px;
-  margin-top: 5px;
 }
 
 .amazon-mobile-logo {
@@ -54,7 +61,7 @@
 
   .amazon-mobile-logo {
     display: block;
-    height: 35px;
+    height: 100px;
     margin-top: 5px;
   }
 }
@@ -65,6 +72,7 @@
   margin-left: 10px;
   margin-right: 10px;
   display: flex;
+  align-items: center;
 }
 
 .search-bar {
@@ -81,7 +89,7 @@
 }
 
 .search-button {
-  background-color: rgb(254, 189, 105);
+  background-color: rgb(248, 174, 36);
   border: none;
   width: 45px;
   height: 40px;
@@ -97,10 +105,11 @@
 }
 
 .amazon-header-right-section {
-  width: 180px;
+  width: 200px;
   flex-shrink: 0;
   display: flex;
   justify-content: end;
+  align-items: center;
 }
 
 .orders-link {
@@ -146,4 +155,12 @@
   
   width: 26px;
   text-align: center;
+}
+
+.signin-btn{
+  background-color: orange;
+  font-size: 15px;
+  height: 50px;
+  display: flex;
+  align-items: center;
 }
