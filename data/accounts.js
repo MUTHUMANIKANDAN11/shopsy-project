@@ -1,21 +1,47 @@
-const accounts = [{
-  name: 'Muthumanikandan',
-  email: 'muthumanikandan11mk@gmail.com',
-  password: 'Mk11@2022',
-  number: 9042321214
-}];
+let accounts;
 
-function isAccount(account){
-  let isThere = false;
-  accounts.forEach((acc) => {
+function loadAccounts(){
+  accounts =  JSON.parse(localStorage.getItem('accounts')) || [{
+    id: 1,
+    name: 'Muthumanikandan',
+    email: 'muthumanikandan11mk@gmail.com',
+    password: 'Mk11@2022',
+    number: 9042321214
+  }];
+}
+
+loadAccounts();
+
+function storeAccountsLocal(){
+  localStorage.setItem('accounts', JSON.stringify(accounts));
+}
+
+export let currentAccountId;
+
+function loadCurrentAccountId(){
+  currentAccountId = JSON.parse(localStorage.getItem('currentAccountId'));
+}
+
+loadCurrentAccountId();
+
+function storeCurrentAccountId(){
+  localStorage.setItem('currentAccountId', JSON.stringify(currentAccountId));
+}
+
+export function isAccount(account){
+  let isThere = -1;
+  accounts.forEach((acc, ind) => {
     if(acc.email === account.email && acc.password === account.password){
-      isThere = true;
+      isThere = ind;
     }
   });
+  currentAccountId = isThere;
+  storeCurrentAccountId();
+
   return isThere;
 }
 
-function addAccount(account) {
+export function addAccount(account) {
   const errors = {};
 
   // Validate Name

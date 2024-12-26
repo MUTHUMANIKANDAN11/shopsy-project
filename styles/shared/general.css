@@ -99,3 +99,11 @@ select:focus,
 input:focus {
   outline: 2px solid rgb(255, 153, 0);
 }
+
+.error-message{
+  color: red;
+}
+
+.error-form-control{
+  border: red 2px solid;
+}

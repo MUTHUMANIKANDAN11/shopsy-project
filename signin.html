@@ -6,6 +6,7 @@
   <title>Sign In</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles/pages/signin.css">
+  <link rel="stylesheet" href="styles/shared/general.css">
 </head>
 <body>
   <div class="form-box">
@@ -25,20 +26,24 @@
         <img src="images/logo/logo-blue.png" alt="">
         
         <div class="form-floating mb-3">
-          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+          <input type="email" class="form-control email-input-js" id="floatingInput" placeholder="name@example.com">
           <label for="floatingInput">Email Address</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+          <input type="password" class="form-control password-input-js" id="floatingPassword" placeholder="Password">
           <label for="floatingPassword">Password</label>
         </div>
+
+        <p class="error-message error-message-js"></p>
         
         <div class="submit-btn-box">
-          <button class="btn btn-primary submit-btn">Sign in</button>
+          <button class="btn btn-primary submit-btn submit-btn-js">Sign in</button>
         </div>
         <p>New Customer? <a href="signup.html">Start here</a></p>
       </div>
     </div>
   </div>
+
+  <script type="module" src="scripts/signin.js"></script>
 </body>
 </html>

@@ -1,12 +1,18 @@
 import { products, Products, Appliances, Clothing } from "../data/products-class.js";
 import {cart} from "../data/cart-class.js";
 import { loadProductFromBackend } from "../data/products-class.js";
+import { currentAccountId } from "../data/accounts.js";
 
 import "../data/accounts.js";
 
 let productSummaryHTML = '';
 
 let products2;
+
+if(currentAccountId === -1){
+    document.querySelector('.signin-btn-js').innerHTML = `
+        <a class="signin-btn signin-btn-js btn btn-warning" href="signin.html">Sign in</a>`
+}
 
 loadProductFromBackend().then((response) => {
     products2 = response.map((product) => {
