@@ -18,6 +18,6 @@ document.querySelector('.submit-btn-js').addEventListener('click', () => {
       label.classList.remove('error-form-control');
     });
 
-    window.location.href = './amazon.html';
+    window.location.href = './shopsy.html';
   }
 });

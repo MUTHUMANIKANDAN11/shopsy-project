@@ -24,6 +24,8 @@ function accountManagement(){
     document.querySelector('.order-link-js').addEventListener('click', () => {
         if(currentAccountId === ''){
             window.location.href = './signin.html';
+        } else {
+            window.location.href = './orders.html';
         }
     });
 }
@@ -61,7 +63,7 @@ loadProductFromBackend().then((response) => {
 });
 
 function renderProductsGrid(){
-    updateQuantityInAmazonPage();
+    updateQuantityInShopsyPage();
     products2.forEach((product) => {
         productSummaryHTML += `
             <div class="product-container">
@@ -125,7 +127,7 @@ function renderProductsGrid(){
             console.log(productId);
             cart.addToCart(productId);
             displayAdded(productId);
-            updateQuantityInAmazonPage();
+            updateQuantityInShopsyPage();
         });
     });
 
@@ -145,7 +147,7 @@ function renderProductsGrid(){
         }, 2000);
     }
 
-    function updateQuantityInAmazonPage(){
+    function updateQuantityInShopsyPage(){
         const quantity = cart.cartQuantity();
         document.querySelector('.js-cart-quantity').innerHTML = quantity;
     }
@@ -157,5 +159,5 @@ document.querySelector('.js-search-button').addEventListener('click', () => {
         search: text
     });
 
-    window.location.href = `amazon.html?${url.toString()}`;
+    window.location.href = `shopsy.html?${url.toString()}`;
 });

@@ -1,5 +1,5 @@
-.amazon-header {
-  background-color: rgb(5, 104, 235);
+.shopsy-header {
+  background-color: gray;
   color: white;
   padding-left: 15px;
   padding-right: 15px;
@@ -15,15 +15,15 @@
   height: 60px;
 }
 
-.amazon-header-left-section {
+.shopsy-header-left-section {
   width: 180px;
 }
 
 @media (max-width: 800px) {
-  .amazon-header-left-section {
+  .shopsy-header-left-section {
     width: unset;
   }
-  .amazon-logo {
+  .shopsy-logo {
     height: 70px;
     object-fit:contain;
   }
@@ -46,27 +46,27 @@
   border: 1px solid white;
 }
 
-.amazon-logo {
+.shopsy-logo {
   width: 100px;
 }
 
-.amazon-mobile-logo {
+.shopsy-mobile-logo {
   display: none;
 }
 
 @media (max-width: 575px) {
-  .amazon-logo {
+  .shopsy-logo {
     display: none;
   }
 
-  .amazon-mobile-logo {
+  .shopsy-mobile-logo {
     display: block;
     height: 100px;
     margin-top: 5px;
   }
 }
 
-.amazon-header-middle-section {
+.shopsy-header-middle-section {
   flex: 1;
   max-width: 850px;
   margin-left: 10px;
@@ -104,7 +104,7 @@
   margin-top: 3px;
 }
 
-.amazon-header-right-section {
+.shopsy-header-right-section {
   width: 250px;
   flex-shrink: 0;
   display: flex;
