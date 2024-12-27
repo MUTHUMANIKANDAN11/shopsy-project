@@ -107,3 +107,8 @@ input:focus {
 .error-form-control{
   border: red 2px solid;
 }
+
+.user-icon{
+  height: 50px;
+  cursor: pointer;
+}

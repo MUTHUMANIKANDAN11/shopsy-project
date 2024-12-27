@@ -1,42 +1,53 @@
-let accounts;
+let accounts = [{
+  id: 1,
+  name: 'Muthumanikandan',
+  email: 'muthumanikandan11mk@gmail.com',
+  password: 'Mk11@2022',
+  number: 9042321214
+}];
 
-function loadAccounts(){
-  accounts =  JSON.parse(localStorage.getItem('accounts')) || [{
-    id: 1,
-    name: 'Muthumanikandan',
-    email: 'muthumanikandan11mk@gmail.com',
-    password: 'Mk11@2022',
-    number: 9042321214
-  }];
+function loadAccountsLocal(){
+  const acc =  JSON.parse(localStorage.getItem('accounts'));
+  if(acc){
+    accounts = acc;
+  }
 }
-
-loadAccounts();
 
 function storeAccountsLocal(){
   localStorage.setItem('accounts', JSON.stringify(accounts));
 }
 
-export let currentAccountId;
+export let currentAccountId = '';
 
-function loadCurrentAccountId(){
-  currentAccountId = JSON.parse(localStorage.getItem('currentAccountId'));
+export function loadCurrentAccountId(){
+  const id = JSON.parse(localStorage.getItem('currentAccountId'));
+  console.log('Loading currentAccountId:', id); // Debugging line
+  if(id){
+    currentAccountId = id;
+  }
+  console.log('Loading currentAccountId:', currentAccountId); // Debugging line
 }
 
-loadCurrentAccountId();
-
 function storeCurrentAccountId(){
+  console.log('Storing currentAccountId:', currentAccountId); // Debugging line
   localStorage.setItem('currentAccountId', JSON.stringify(currentAccountId));
 }
 
+loadAccountsLocal();
+loadCurrentAccountId();
+
 export function isAccount(account){
-  let isThere = -1;
+  let isThere = '';
   accounts.forEach((acc, ind) => {
     if(acc.email === account.email && acc.password === account.password){
-      isThere = ind;
+      isThere = String(ind);
     }
   });
   currentAccountId = isThere;
   storeCurrentAccountId();
+  loadCurrentAccountId();
+  alert(currentAccountId);
+  
 
   return isThere;
 }

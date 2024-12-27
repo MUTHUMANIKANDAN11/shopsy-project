@@ -1,7 +1,7 @@
 import { products, Products, Appliances, Clothing } from "../data/products-class.js";
 import {cart} from "../data/cart-class.js";
 import { loadProductFromBackend } from "../data/products-class.js";
-import { currentAccountId } from "../data/accounts.js";
+import { currentAccountId, loadCurrentAccountId } from "../data/accounts.js";
 
 import "../data/accounts.js";
 
@@ -9,10 +9,26 @@ let productSummaryHTML = '';
 
 let products2;
 
-if(currentAccountId === -1){
-    document.querySelector('.signin-btn-js').innerHTML = `
-        <a class="signin-btn signin-btn-js btn btn-warning" href="signin.html">Sign in</a>`
+function accountManagement(){
+    loadCurrentAccountId();
+    console.log(currentAccountId);
+
+    if(currentAccountId){
+        document.querySelector('.signin-btn-js').innerHTML = `<img class="user-icon" src="images/icons/user-icon.png" alt="">`;
+    } else {
+        console.log(currentAccountId);
+        document.querySelector('.signin-btn-js').innerHTML = `
+            <a class="signin-btn signin-btn-js btn btn-warning" href="signin.html">Sign in</a>`;
+    }
+
+    document.querySelector('.order-link-js').addEventListener('click', () => {
+        if(currentAccountId === ''){
+            window.location.href = './signin.html';
+        }
+    });
 }
+
+accountManagement();
 
 loadProductFromBackend().then((response) => {
     products2 = response.map((product) => {

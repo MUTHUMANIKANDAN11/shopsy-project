@@ -6,7 +6,8 @@ document.querySelector('.submit-btn-js').addEventListener('click', () => {
 
   const res = isAccount({email, password});
 
-  if(res == -1){
+  console.log(res);
+  if(! res){
     document.querySelector('.error-message-js').innerText = 'Invalid email or password';
     document.querySelectorAll('.form-control').forEach((label) => {
       label.classList.add('error-form-control');
