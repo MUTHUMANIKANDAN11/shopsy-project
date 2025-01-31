@@ -59,7 +59,7 @@ import { moneyFormat } from "../others/money-format.js";
   }
 
   export function loadProductFromBackend(){
-    const fet = fetch("https://supersimplebackend.dev/products").then((response) => {
+    const fet = fetch("http://localhost:3000").then((response) => {
       return response.json();
     });
     

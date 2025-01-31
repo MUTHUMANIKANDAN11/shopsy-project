@@ -7,10 +7,8 @@ import { moneyFormat } from "../../others/money-format.js";
 
 export function renderOrderSummary(){
     let orderSummaryHTML = '';
-    console.log(cart.cartItem);
     cart.cartItem.forEach((cartItem) => {
         const matchedItem = matchingProductItem(cartItem.productId);
-        console.log(cartItem);
         const productId = matchedItem.id;
         const deliveryOptionId = String(cartItem.deliveryOptionId);
         
@@ -143,7 +141,7 @@ export function renderOrderSummary(){
         option.addEventListener('click', () => {
             const productId = option.dataset.productId;
             const deliveryOptionId = option.dataset.deliveryOptionId;
-            console.log(productId, deliveryOptionId);
+            //console.log(productId, deliveryOptionId);
             cart.updateDeliveryOptionId(productId, deliveryOptionId);
             renderOrderSummary();
         });

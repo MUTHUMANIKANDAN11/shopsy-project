@@ -12,13 +12,15 @@ function renderOrdersPage(){
         let productsHTML = '';
 
         order.products.forEach((product) => {
+            console.log(product);
             
             const matchedProduct = matchingProductItem(product.productId);
 
             const date = new Date(product.estimatedDeliveryTime);
             const datenum = date.getDate();
             const month = date.toLocaleString('en-US', { month: 'long' });
-
+            console.log(matchedProduct);
+            
             productsHTML += 
             `<div class="product-image-container">
                 <img src="${matchedProduct.image}">

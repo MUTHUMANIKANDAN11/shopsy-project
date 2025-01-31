@@ -1,0 +1,94 @@
+.form-box{
+  position: fixed;
+  top: 5%;
+  bottom: 10%;
+  right: 30%;
+  left: 30%;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+}
+
+h1{
+  font-weight: bold;
+}
+
+body{
+  background-color: rgb(177, 177, 177);
+  font-family: arial;
+  background-size: cover;
+}
+
+.main-body{
+  padding-top: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+}
+
+.form{
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 80%;
+}
+
+.submit-btn-box{
+  padding-block: 17px;
+  border-top: solid rgb(0, 0, 0) 1px;
+}
+
+.submit-btn{
+  color: white;
+  border: none;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.footer{
+  margin-left: 30px;
+}
+
+@media (max-width: 2000px) {
+  .products-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+/* This @media means when the screen width is 1600px or
+   less, we will divide the grid into 6 columns. */
+
+
+@media (max-width: 1300px) {
+  .form-box{
+    position: fixed;
+    top: 5%;
+    bottom: 10%;
+    right: 25%;
+    left: 25%;
+  }  
+}
+
+@media (max-width: 800px) {
+  .form-box{
+    position: fixed;
+    top: 5%;
+    bottom: 10%;
+    right: 20%;
+    left: 20%;
+  }  
+}
+
+@media (max-width: 575px) {
+  .form-box{
+    position: fixed;
+    top: 5%;
+    bottom: 10%;
+    right: 10%;
+    left: 10%;
+  }  
+}

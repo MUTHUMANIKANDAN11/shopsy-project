@@ -1,7 +1,7 @@
-import { products, Products, Appliances, Clothing } from "../data/products-class.js";
+import { products, Products, Appliances, Clothing, storeProductLocal } from "../data/products-class.js";
 import {cart} from "../data/cart-class.js";
 import { loadProductFromBackend } from "../data/products-class.js";
-import { currentAccountId, loadCurrentAccountId } from "../data/accounts.js";
+import { currentAccountId, loadCurrentAccountId, clearCurrentAccountId } from "../data/accounts.js";
 
 import "../data/accounts.js";
 
@@ -11,7 +11,6 @@ let products2;
 
 function accountManagement(){
     loadCurrentAccountId();
-    console.log(currentAccountId);
 
     if(currentAccountId){
         document.querySelector('.signin-btn-js').innerHTML = `<img class="user-icon" src="images/icons/user-icon.png" alt="">`;
@@ -31,6 +30,23 @@ function accountManagement(){
 }
 
 accountManagement();
+
+function visibilityAccountPopup(){
+    const popup = document.querySelector('.js-account-popup');
+    if(popup.classList.contains('disable-account-popup')){
+        popup.classList.remove('disable-account-popup');
+    } else {
+        popup.classList.add('disable-account-popup');
+    }
+}
+
+document.querySelector('.signin-btn-js').addEventListener('click', () => visibilityAccountPopup());
+
+document.querySelector('.js-signout-btn').addEventListener('click', () => {
+    clearCurrentAccountId();
+    accountManagement();
+    visibilityAccountPopup();
+});
 
 loadProductFromBackend().then((response) => {
     products2 = response.map((product) => {
@@ -63,6 +79,7 @@ loadProductFromBackend().then((response) => {
 });
 
 function renderProductsGrid(){
+
     updateQuantityInShopsyPage();
     products2.forEach((product) => {
         productSummaryHTML += `

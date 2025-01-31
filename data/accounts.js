@@ -2,7 +2,7 @@ let accounts = [{
   id: 1,
   name: 'Muthumanikandan',
   email: 'muthumanikandan11mk@gmail.com',
-  password: 'Mk11@2022',
+  password: 'Mk11@2004',
   number: 9042321214
 }];
 
@@ -21,16 +21,22 @@ export let currentAccountId = '';
 
 export function loadCurrentAccountId(){
   const id = JSON.parse(localStorage.getItem('currentAccountId'));
-  console.log('Loading currentAccountId:', id); // Debugging line
+  //console.log('Loading currentAccountId:', id); // Debugging line
   if(id){
     currentAccountId = id;
   }
-  console.log('Loading currentAccountId:', currentAccountId); // Debugging line
+  //console.log('Loading currentAccountId:', currentAccountId); // Debugging line
 }
 
-function storeCurrentAccountId(){
-  console.log('Storing currentAccountId:', currentAccountId); // Debugging line
+export function storeCurrentAccountId(){
+  //console.log('Storing currentAccountId:', currentAccountId); // Debugging line
   localStorage.setItem('currentAccountId', JSON.stringify(currentAccountId));
+}
+
+export function clearCurrentAccountId(){
+  currentAccountId = '';
+  storeCurrentAccountId();
+  loadCurrentAccountId();
 }
 
 loadAccountsLocal();
@@ -46,7 +52,7 @@ export function isAccount(account){
   currentAccountId = isThere;
   storeCurrentAccountId();
   loadCurrentAccountId();
-  alert(currentAccountId);
+  //alert(currentAccountId);
   
 
   return isThere;
