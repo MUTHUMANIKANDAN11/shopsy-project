@@ -23,7 +23,7 @@ app.use(express.json());
 
 const { log } = require('console');
 
-app.get('/', (req, res) => {
+app.get('/products', (req, res) => {
   return res.send(product);
 })
 
