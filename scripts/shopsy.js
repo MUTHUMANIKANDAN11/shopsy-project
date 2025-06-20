@@ -1,6 +1,7 @@
 import { products, Products, Appliances, Clothing, storeProductLocal } from "../data/products-class.js";
-import {cart} from "../data/cart-class.js";
+// import {cart} from "../data/cart-class.js"; // Remove local cart
 import { loadProductFromBackend } from "../data/products-class.js";
+import { addToCart, getCart } from "./utils/api.js";
 
 let productSummaryHTML = '';
 
@@ -137,12 +138,20 @@ function renderProductsGrid(){
     document.querySelector('.js-products-grid').innerHTML = productSummaryHTML;
 
     document.querySelectorAll('.js-add-to-cart-button').forEach((button) => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
+            // Check if user is logged in
+            const authToken = localStorage.getItem('authToken');
+            const userData = localStorage.getItem('userData');
+            const isLoggedIn = !!authToken && !!userData;
+            if (!isLoggedIn) {
+                window.location.href = 'signin.html';
+                return;
+            }
             const productId = button.dataset.productId;
             console.log(productId);
-            cart.addToCart(productId);
+            await addToCart(productId, 1);
+            await updateQuantityInShopsyPage();
             displayAdded(productId);
-            updateQuantityInShopsyPage();
         });
     });
 
@@ -162,9 +171,14 @@ function renderProductsGrid(){
         }, 2000);
     }
 
-    function updateQuantityInShopsyPage(){
-        const quantity = cart.cartQuantity();
-        document.querySelector('.js-cart-quantity').innerHTML = quantity;
+    async function updateQuantityInShopsyPage(){
+        try {
+            const cart = await getCart();
+            const quantity = cart.products.reduce((sum, item) => sum + item.quantity, 0);
+            document.querySelector('.js-cart-quantity').innerHTML = quantity;
+        } catch (e) {
+            document.querySelector('.js-cart-quantity').innerHTML = 0;
+        }
     }
 }
 

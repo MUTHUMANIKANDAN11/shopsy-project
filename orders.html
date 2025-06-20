@@ -60,5 +60,10 @@
     </div>
 
     <script type="module" src="scripts/orders.js"></script>
+    <script>
+      if (!localStorage.getItem('authToken')) {
+        window.location.href = 'signin.html';
+      }
+    </script>
   </body>
 </html>

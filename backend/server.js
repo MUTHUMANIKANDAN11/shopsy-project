@@ -71,7 +71,8 @@ const cartSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   products: [{
     productId: { type: String, required: true },
-    quantity: { type: Number, required: true, min: 1 }
+    quantity: { type: Number, required: true, min: 1 },
+    deliveryOptionId: { type: String, default: '1' }
   }],
   updatedAt: { type: Date, default: Date.now }
 });
@@ -346,7 +347,7 @@ app.post('/api/cart/add', authenticateToken, async (req, res) => {
     if (existingProductIndex > -1) {
       cart.products[existingProductIndex].quantity += quantity;
     } else {
-      cart.products.push({ productId, quantity });
+      cart.products.push({ productId, quantity, deliveryOptionId: '1' });
     }
 
     cart.updatedAt = new Date();
@@ -406,6 +407,30 @@ app.delete('/api/cart/clear', authenticateToken, async (req, res) => {
     res.json({ message: 'Cart cleared' });
   } catch (error) {
     console.error('Clear cart error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/api/cart/delivery-option', authenticateToken, async (req, res) => {
+  try {
+    const { productId, deliveryOptionId } = req.body;
+    if (!productId || !deliveryOptionId) {
+      return res.status(400).json({ error: 'Product ID and delivery option ID are required' });
+    }
+    const cart = await Cart.findOne({ userId: req.user._id });
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+    const product = cart.products.find(item => item.productId === productId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found in cart' });
+    }
+    product.deliveryOptionId = deliveryOptionId;
+    cart.updatedAt = new Date();
+    await cart.save();
+    res.json({ message: 'Delivery option updated', cart });
+  } catch (error) {
+    console.error('Update delivery option error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

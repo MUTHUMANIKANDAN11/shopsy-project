@@ -99,6 +99,13 @@ export async function clearCart() {
   });
 }
 
+export async function updateCartDeliveryOption(productId, deliveryOptionId) {
+  return apiRequest('/cart/delivery-option', {
+    method: 'PUT',
+    body: JSON.stringify({ productId, deliveryOptionId }),
+  });
+}
+
 // Order API calls
 export async function getOrders() {
   return apiRequest('/orders');

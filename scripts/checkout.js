@@ -1,7 +1,7 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSumary } from "./checkout/paymentSummary.js";
-import { loadProductFromBackend, loadProductLocal, storeProductLocal } from "../data/products-class.js";
-import { products } from "../data/products-class.js";
+import { loadProductFromBackend } from "../data/products-class.js";
+import { getCart } from "./utils/api.js";
 
 //import '../data/cart-class.js';
 //import "../data/products-class.js";
@@ -11,17 +11,13 @@ import { products } from "../data/products-class.js";
 
 async function loadCheckoutPage(){
     await loadProductFromBackend();
-    renderOrderSummary();
-    renderPaymentSumary();
+    const cart = await getCart();
+    // Pass cart to order summary and payment summary rendering if needed
+    renderOrderSummary(cart);
+    renderPaymentSumary(cart);
 }
 
-if(products === "NULL"){
-    loadCheckoutPage();
-} else {
-    loadProductLocal();
-    renderOrderSummary();
-    renderPaymentSumary();
-}
+loadCheckoutPage();
 
 /*
 loadProductFromBackend(() => {

@@ -1,26 +1,30 @@
-import { orders } from "../data/orders.js";
-import { matchingProductItem, products } from "../data/products.js";
+import { getOrders } from "./utils/api.js";
+import { matchingProductItem } from "../data/products.js";
 import { moneyFormat } from "../others/money-format.js";
-import { cart } from "../data/cart-class.js";
 
-function renderOrdersPage(){
+async function renderOrdersPage() {
     let ordersHTML = '';
+    let orders = [];
+    try {
+        orders = await getOrders();
+    } catch (e) {
+        orders = [];
+    }
 
-    document.querySelector('.js-cart-quantity').innerText = cart.cartQuantity();
+    if (!orders || orders.length === 0) {
+        ordersHTML = '<div class="empty-indication">You have no orders yet.</div>';
+        document.querySelector('.js-orders-grid').innerHTML = ordersHTML;
+        return;
+    }
 
     orders.forEach((order) => {
         let productsHTML = '';
 
         order.products.forEach((product) => {
-            console.log(product);
-            
             const matchedProduct = matchingProductItem(product.productId);
-
             const date = new Date(product.estimatedDeliveryTime);
             const datenum = date.getDate();
             const month = date.toLocaleString('en-US', { month: 'long' });
-            console.log(matchedProduct);
-            
             productsHTML += 
             `<div class="product-image-container">
                 <img src="${matchedProduct.image}">
@@ -78,7 +82,7 @@ function renderOrdersPage(){
 
             <div class="order-header-right-section">
                 <div class="order-header-label">Order ID:</div>
-                <div>${order.id}</div>
+                <div>${order.orderId || order.id}</div>
             </div>
             </div>
 
@@ -90,34 +94,33 @@ function renderOrdersPage(){
     });
 
     document.querySelector('.js-orders-grid').innerHTML = ordersHTML;
+
+    document.querySelectorAll('.js-buy-again-button').forEach((button) => {
+        button.addEventListener('click', () => {
+            // You can implement buy again logic here using backend cart API
+            alert('Buy again feature coming soon!');
+        });
+    });
+
+    document.querySelectorAll('.js-track-package-button').forEach((button) => {
+        button.addEventListener('click', () => {
+            const name = button.dataset.productName;
+            const image = button.dataset.productImage;
+            const date = button.dataset.productDate;
+            const quantity = button.dataset.productQuantity;
+            const orderTime = button.dataset.productOrder;
+
+            const param = new URLSearchParams({
+                name,
+                image,
+                date,
+                quantity,
+                orderTime
+            });
+            
+            window.location.href = `./tracking.html?${param.toString()}`;
+        });
+    });
 }
 
 renderOrdersPage();
-
-document.querySelectorAll('.js-buy-again-button').forEach((button) => {
-    button.addEventListener('click', () => {
-        const productId = button.dataset.productId;
-        cart.addToCart(productId, 1);
-        document.querySelector('.js-cart-quantity').innerText = cart.cartQuantity();
-    });
-});
-
-document.querySelectorAll('.js-track-package-button').forEach((button) => {
-    button.addEventListener('click', () => {
-        const name = button.dataset.productName;
-        const image = button.dataset.productImage;
-        const date = button.dataset.productDate;
-        const quantity = button.dataset.productQuantity;
-        const orderTime = button.dataset.productOrder;
-
-        const param = new URLSearchParams({
-            name,
-            image,
-            date,
-            quantity,
-            orderTime
-        });
-        
-        window.location.href = `./tracking.html?${param.toString()}`;
-    });
-});
