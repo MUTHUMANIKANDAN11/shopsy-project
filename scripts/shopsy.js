@@ -1,11 +1,8 @@
-import { products, Products, Appliances, Clothing, storeProductLocal } from "../data/products-class.js";
-// import {cart} from "../data/cart-class.js"; // Remove local cart
 import { loadProductFromBackend } from "../data/products-class.js";
 import { addToCart, getCart } from "./utils/api.js";
 
 let productSummaryHTML = '';
-
-let products2;
+let products = []; // Use a single array for products
 
 function accountManagement(){
     const authToken = localStorage.getItem('authToken');
@@ -48,30 +45,22 @@ document.querySelector('.js-signout-btn').addEventListener('click', () => {
     visibilityAccountPopup();
 });
 
+document.querySelector('.js-viewprofile-btn').addEventListener('click', () => {
+    window.location.href = 'profile.html';
+});
+
 loadProductFromBackend().then((response) => {
-    products2 = response.map((product) => {
-        if(product.type === 'clothing'){
-          return new Clothing(product);
-        }
-        if(product.type === 'appliance'){
-          return new Appliances(product);
-        }
-        return new Products(product);
-      });
-    
+    products = response; // Directly use the response from the backend
+      
     const url = new URL(window.location.href);
     const isParam = url.searchParams.has('search');
     
     if(isParam){
         const text = url.searchParams.get('search').toLocaleLowerCase();
-        let newProduct = [];
-        products2.forEach((productItem) => {
+        products = products.filter((productItem) => {
             const name = productItem.name.toLocaleLowerCase();
-            if(name.includes(text) || (productItem.keywords && productItem.keywords.includes(text))){
-                newProduct.push(productItem);
-            }
+            return name.includes(text) || (productItem.keywords && productItem.keywords.includes(text));
         });
-        products2 = newProduct;
     }
     
     renderProductsGrid();
@@ -80,7 +69,10 @@ loadProductFromBackend().then((response) => {
 function renderProductsGrid(){
     productSummaryHTML = '';
     updateQuantityInShopsyPage();
-    products2.forEach((product) => {
+    products.forEach((product) => {
+        const priceString = (product.priceCents / 100).toFixed(2);
+        const starURL = `images/ratings/rating-${product.rating.stars * 10}.png`;
+
         productSummaryHTML += `
             <div class="product-container">
                 <div class="product-image-container">
@@ -94,14 +86,14 @@ function renderProductsGrid(){
 
                 <div class="product-rating-container">
                 <img class="product-rating-stars"
-                    src="${product.getStarURL()}">
+                    src="${starURL}">
                 <div class="product-rating-count link-primary">
                     ${product.rating.count}
                 </div>
                 </div>
 
                 <div class="product-price">
-                    ${product.getPrice()}
+                    $${priceString}
                 </div>
 
                 <div class="product-quantity-container">
@@ -121,7 +113,7 @@ function renderProductsGrid(){
 
                 <div class="product-spacer"></div>
 
-                ${product.getSizeChartLink()}
+                ${product.sizeChartLink ? `<a href="images/clothing-size-chart.png" target="_blank">Size chart</a>` : ''}
 
                 <div class="added-to-cart js-added-to-cart-${product.id}">
                 <img src="images/icons/checkmark.png">

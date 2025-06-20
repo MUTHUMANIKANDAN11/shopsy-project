@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
+const twilio = require('twilio');
 require('dotenv').config();
 
 const app = express();
@@ -438,7 +439,7 @@ app.put('/api/cart/delivery-option', authenticateToken, async (req, res) => {
 // 8. Order Operations
 app.post('/api/orders', authenticateToken, async (req, res) => {
   try {
-    const { cart, deliveryAddress, deliveryOptionId } = req.body;
+    const { cart, deliveryAddress } = req.body;
 
     if (!cart || !deliveryAddress) {
       return res.status(400).json({ error: 'Cart and delivery address are required' });
@@ -446,8 +447,6 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
 
     // Calculate delivery time
     let deliveryDays = 7; // Default
-    if (deliveryOptionId === '2') deliveryDays = 3;
-    else if (deliveryOptionId === '3') deliveryDays = 1;
 
     const products = [];
     let totalCents = 0;
@@ -487,6 +486,30 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
       { userId: req.user._id },
       { products: [], updatedAt: new Date() }
     );
+
+    // --- Send SMS Notification ---
+    try {
+        const user = await User.findById(req.user._id);
+        const userPhoneNumber = user.phone;
+        const message = `Thank you for your order, ${user.name}! Your order #${order.orderId} has been placed successfully.`;
+
+        // Check if Twilio credentials are set
+        if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
+            const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+            await twilioClient.messages.create({
+                body: message,
+                from: process.env.TWILIO_PHONE_NUMBER,
+                to: `+${userPhoneNumber}` // Ensure phone number includes country code
+            });
+            console.log(`SMS notification sent to ${userPhoneNumber}`);
+        } else {
+            console.log('Twilio credentials not set. Skipping SMS. Message:', message);
+        }
+    } catch (smsError) {
+        console.error('Error sending SMS notification:', smsError);
+        // Do not fail the order if SMS fails
+    }
+    // --- End SMS Notification ---
 
     res.status(201).json({
       message: 'Order placed successfully',

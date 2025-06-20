@@ -1,7 +1,7 @@
 import { deliveryOptions } from "../../data/deliveryOptions.js";
 import { matchingProductItem } from "../../data/products.js";
 import { moneyFormat } from "../../others/money-format.js";
-import { createOrder, clearCart } from "../utils/api.js";
+import { createOrder, clearCart, getUserProfile, updateUserProfile } from "../utils/api.js";
 
 export function renderPaymentSumary(cart) {
     const quantity = cart.products.reduce((sum, item) => sum + item.quantity, 0);
@@ -12,14 +12,14 @@ export function renderPaymentSumary(cart) {
         const matchedProduct = matchingProductItem(cartItem.productId);
         initialAmount += matchedProduct.priceCents * cartItem.quantity;
 
-        deliveryOptions.forEach((option) => {
-            if(option.id === cartItem.deliveryOptionId){
-                shippingAmount += option.priceCents;
-            }
-        });
+        // Find the selected delivery option for the item
+        const deliveryOption = deliveryOptions.find(option => option.id === (cartItem.deliveryOptionId || '1'));
+        if (deliveryOption) {
+            shippingAmount += deliveryOption.priceCents;
+        }
     });
 
-    const beforeTax = initialAmount+shippingAmount;
+    const beforeTax = initialAmount + shippingAmount;
     const taxAmount = Math.round(beforeTax * 0.10);
     const totalAmount = beforeTax + taxAmount;
 
@@ -56,18 +56,28 @@ export function renderPaymentSumary(cart) {
 
     document.querySelector('.js-place-order-button').addEventListener('click', async () => {
         try {
-            // You may want to collect delivery address and options from the UI
-            const deliveryAddress = prompt('Enter your delivery address:');
-            const deliveryOptionId = '1'; // Default or get from UI
-            const response = await createOrder({
+            const user = await getUserProfile();
+            let deliveryAddress = user.address;
+
+            if (!deliveryAddress || deliveryAddress.trim() === '') {
+                deliveryAddress = prompt('Please enter your delivery address to continue:');
+                if (!deliveryAddress || deliveryAddress.trim() === '') {
+                    alert('A delivery address is required to place an order.');
+                    return;
+                }
+                await updateUserProfile({ address: deliveryAddress });
+            }
+            
+            await createOrder({
                 cart: cart.products,
                 deliveryAddress,
-                deliveryOptionId
             });
+
             await clearCart();
             window.location.href = './orders.html';
         } catch (error) {
             console.error('Error placing order:', error);
+            alert('Could not place order. Please try again.');
         }
     });
 }
