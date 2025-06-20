@@ -2,14 +2,24 @@
 const API_BASE_URL = 'http://localhost:3000/api';
 
 // DOM Elements
+const nameInput = document.querySelector('.name-input-js');
 const emailInput = document.querySelector('.email-input-js');
 const passwordInput = document.querySelector('.password-input-js');
+const phoneInput = document.querySelector('.phone-input-js');
+const addressInput = document.querySelector('.address-input-js');
 const submitBtn = document.querySelector('.submit-btn-js');
 const errorMessage = document.querySelector('.error-message-js');
 
 // Form validation
 function validateForm() {
   const errors = {};
+
+  // Name validation
+  if (!nameInput.value.trim()) {
+    errors.name = 'Name is required';
+  } else if (!/^[a-zA-Z\s]+$/.test(nameInput.value.trim())) {
+    errors.name = 'Name must contain only letters and spaces';
+  }
 
   // Email validation
   if (!emailInput.value.trim()) {
@@ -21,6 +31,23 @@ function validateForm() {
   // Password validation
   if (!passwordInput.value) {
     errors.password = 'Password is required';
+  } else if (passwordInput.value.length < 8) {
+    errors.password = 'Password must be at least 8 characters long';
+  } else if (!/[A-Z]/.test(passwordInput.value)) {
+    errors.password = 'Password must contain at least one uppercase letter';
+  } else if (!/[a-z]/.test(passwordInput.value)) {
+    errors.password = 'Password must contain at least one lowercase letter';
+  } else if (!/[0-9]/.test(passwordInput.value)) {
+    errors.password = 'Password must contain at least one digit';
+  } else if (!/[!@#$%^&*]/.test(passwordInput.value)) {
+    errors.password = 'Password must contain at least one special character (!@#$%^&*)';
+  }
+
+  // Phone validation
+  if (!phoneInput.value.trim()) {
+    errors.phone = 'Phone number is required';
+  } else if (!/^\d{10}$/.test(phoneInput.value.trim())) {
+    errors.phone = 'Phone number must be exactly 10 digits';
   }
 
   return errors;
@@ -57,10 +84,10 @@ function clearErrorStyling(input) {
 }
 
 // Apply error clearing to all inputs
-[emailInput, passwordInput].forEach(clearErrorStyling);
+[nameInput, emailInput, passwordInput, phoneInput, addressInput].forEach(clearErrorStyling);
 
 // Handle form submission
-async function handleSignin(event) {
+async function handleSignup(event) {
   event.preventDefault();
   
   // Validate form
@@ -72,15 +99,18 @@ async function handleSignin(event) {
 
   // Show loading state
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Signing In...';
+  submitBtn.textContent = 'Creating Account...';
 
   try {
     const userData = {
+      name: nameInput.value.trim(),
       email: emailInput.value.trim(),
-      password: passwordInput.value
+      password: passwordInput.value,
+      phone: phoneInput.value.trim(),
+      address: addressInput.value.trim() || ''
     };
 
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +126,7 @@ async function handleSignin(event) {
       localStorage.setItem('userData', JSON.stringify(data.user));
       
       // Show success message
-      errorMessage.innerHTML = '<span class="text-success">Login successful! Redirecting...</span>';
+      errorMessage.innerHTML = '<span class="text-success">Account created successfully! Redirecting...</span>';
       
       // Redirect to main page
       setTimeout(() => {
@@ -104,22 +134,29 @@ async function handleSignin(event) {
       }, 1500);
     } else {
       // Display server error
-      errorMessage.innerHTML = data.error || 'Login failed. Please check your credentials.';
+      errorMessage.innerHTML = data.error || 'Registration failed. Please try again.';
     }
   } catch (error) {
-    console.error('Signin error:', error);
+    console.error('Signup error:', error);
     errorMessage.innerHTML = 'Network error. Please check your connection and try again.';
   } finally {
     // Reset button state
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Sign In';
+    submitBtn.textContent = 'Create Account';
   }
 }
 
 // Event listeners
-submitBtn.addEventListener('click', handleSignin);
+submitBtn.addEventListener('click', handleSignup);
 
 // Handle Enter key navigation
+nameInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    emailInput.focus();
+  }
+});
+
 emailInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
@@ -130,6 +167,20 @@ emailInput.addEventListener('keydown', (event) => {
 passwordInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
-    submitBtn.click();
+    phoneInput.focus();
   }
 });
+
+phoneInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    addressInput.focus();
+  }
+});
+
+addressInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    submitBtn.click();
+  }
+}); 

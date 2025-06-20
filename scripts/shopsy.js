@@ -1,27 +1,25 @@
 import { products, Products, Appliances, Clothing, storeProductLocal } from "../data/products-class.js";
 import {cart} from "../data/cart-class.js";
 import { loadProductFromBackend } from "../data/products-class.js";
-import { currentAccountId, loadCurrentAccountId, clearCurrentAccountId } from "../data/accounts.js";
-
-import "../data/accounts.js";
 
 let productSummaryHTML = '';
 
 let products2;
 
 function accountManagement(){
-    loadCurrentAccountId();
+    const authToken = localStorage.getItem('authToken');
+    const userData = localStorage.getItem('userData');
+    const isLoggedIn = !!authToken && !!userData;
 
-    if(currentAccountId){
+    if(isLoggedIn){
         document.querySelector('.signin-btn-js').innerHTML = `<img class="user-icon" src="images/icons/user-icon.png" alt="">`;
     } else {
-        console.log(currentAccountId);
         document.querySelector('.signin-btn-js').innerHTML = `
             <a class="signin-btn signin-btn-js btn btn-warning" href="signin.html">Sign in</a>`;
     }
 
     document.querySelector('.order-link-js').addEventListener('click', () => {
-        if(currentAccountId === ''){
+        if(!isLoggedIn){
             window.location.href = './signin.html';
         } else {
             window.location.href = './orders.html';
@@ -43,7 +41,8 @@ function visibilityAccountPopup(){
 document.querySelector('.signin-btn-js').addEventListener('click', () => visibilityAccountPopup());
 
 document.querySelector('.js-signout-btn').addEventListener('click', () => {
-    clearCurrentAccountId();
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
     accountManagement();
     visibilityAccountPopup();
 });
@@ -58,17 +57,16 @@ loadProductFromBackend().then((response) => {
         }
         return new Products(product);
       });
-      
-    const url = new URL(window.location.href);
     
+    const url = new URL(window.location.href);
     const isParam = url.searchParams.has('search');
     
     if(isParam){
         const text = url.searchParams.get('search').toLocaleLowerCase();
         let newProduct = [];
-        products.forEach((productItem) => {
+        products2.forEach((productItem) => {
             const name = productItem.name.toLocaleLowerCase();
-            if(name.includes(text) || productItem.keywords.includes(text)){
+            if(name.includes(text) || (productItem.keywords && productItem.keywords.includes(text))){
                 newProduct.push(productItem);
             }
         });
@@ -79,7 +77,7 @@ loadProductFromBackend().then((response) => {
 });
 
 function renderProductsGrid(){
-
+    productSummaryHTML = '';
     updateQuantityInShopsyPage();
     products2.forEach((product) => {
         productSummaryHTML += `
