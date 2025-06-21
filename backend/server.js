@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection (Replace with your MongoDB URL)
-const MONGODB_URI = 'mongodb://localhost:27017/shopsy'; // Example URL
+const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_NAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_URI}.mongodb.net/shopsy`;
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
